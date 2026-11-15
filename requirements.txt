@@ -1,6 +1,0 @@
-requests
-sounddevice
-vosk
-edge-tts
-pywin32
-pillow
