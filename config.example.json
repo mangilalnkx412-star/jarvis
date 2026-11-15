@@ -1,0 +1,8 @@
+{
+  "online_ai": false,
+  "openai_api_key": "",
+  "openai_model": "gpt-4.1-mini",
+  "ollama_model": "qwen3:1.7b",
+  "hindi_voice": "hi-IN-MadhurNeural",
+  "vosk_model": "vosk-model-small-hi-0.22"
+}

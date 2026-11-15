@@ -1,0 +1,139 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JARVIS AI - Personal Assistant</title>
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #050b18;
+      color: white;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .assistant {
+      text-align: center;
+      padding: 35px;
+      width: 90%;
+      max-width: 500px;
+      border: 1px solid #00d9ff;
+      border-radius: 25px;
+      background: #0c1830;
+      box-shadow: 0 0 35px #00d9ff33;
+    }
+
+    h1 {
+      color: #00d9ff;
+      letter-spacing: 5px;
+      font-size: 42px;
+    }
+
+    .mic {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      border: 3px solid #00d9ff;
+      background: #10284a;
+      color: white;
+      font-size: 55px;
+      cursor: pointer;
+      box-shadow: 0 0 30px #00d9ff;
+      margin: 30px auto;
+    }
+
+    .mic:active {
+      transform: scale(0.95);
+    }
+
+    #status {
+      color: #8beaff;
+      font-size: 18px;
+    }
+
+    #output {
+      margin-top: 20px;
+      line-height: 1.7;
+      overflow-wrap: anywhere;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="assistant">
+    <h1>JARVIS AI</h1>
+    <p>Your Personal Voice Assistant</p>
+
+    <button class="mic" onclick="startListening()">🎙️</button>
+
+    <p id="status">Tap microphone to speak</p>
+    <div id="output"></div>
+  </div>
+
+  <script>
+    const SpeechRecognition =
+      window.SpeechRecognition ||
+      window.webkitSpeechRecognition;
+
+    function speak(text) {
+      const speech = new SpeechSynthesisUtterance(text);
+      speech.lang = "hi-IN";
+      window.speechSynthesis.speak(speech);
+    }
+
+    function startListening() {
+      if (!SpeechRecognition) {
+        document.getElementById("status").innerText =
+          "Voice recognition not supported in this browser.";
+        return;
+      }
+
+      const recognition = new SpeechRecognition();
+      recognition.lang = "hi-IN";
+
+      document.getElementById("status").innerText =
+        "Listening...";
+
+      recognition.onresult = function(event) {
+        const message = event.results[0][0].transcript;
+
+        document.getElementById("output").innerText =
+          "You: " + message;
+
+        document.getElementById("status").innerText =
+          "Processing...";
+
+        const reply = "Namaste! Main Jarvis hoon. Aapne kaha: " + message;
+
+        speak(reply);
+
+        document.getElementById("output").innerText +=
+          "\n\nJarvis: " + reply;
+
+        document.getElementById("status").innerText =
+          "Tap microphone to speak";
+      };
+
+      recognition.onerror = function(event) {
+        document.getElementById("status").innerText =
+          "Microphone error: " + event.error;
+      };
+
+      recognition.onend = function() {
+        if (document.getElementById("status").innerText === "Listening...") {
+          document.getElementById("status").innerText =
+            "Tap microphone to speak";
+        }
+      };
+
+      recognition.start();
+    }
+  </script>
+
+</body>
+</html>
